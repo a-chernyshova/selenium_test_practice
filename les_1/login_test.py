@@ -21,7 +21,6 @@ def login(url, login, password):
     #browser = webdriver.Firefox(firefox_binary='C:\\Program Files(x86)\\Firefox Developer Edition\\firefox.exe')
     #browser = webdriver.Firefox(firefox_binary="c:\\Program Files(x86)\\Nightly\\firefox.exe")
     browser.get(url)
-    print(browser.get_cookies())
     browser.find_element_by_name('username').send_keys(login)
     browser.find_element_by_name('password').send_keys(password)
     browser.find_element_by_name('login').click()
