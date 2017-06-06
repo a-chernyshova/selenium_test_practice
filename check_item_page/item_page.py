@@ -47,8 +47,10 @@ def find_parameters(browser, num):
                 'font-size')
             color = element.find_element_by_css_selector('.campaign-price').value_of_css_property("color")
             color = parse_color(color)
+            # support FF - .value_of_css_property("font-weight") - doesn't work for FF
+            decoration1 = element.find_element_by_css_selector('.campaign-price').get_attribute('tagName')
             decoration = element.find_element_by_css_selector('.campaign-price').value_of_css_property("font-weight")
-            if decoration != 'bold':
+            if decoration != 'bold' or decoration1 != 'STRONG':
                 print(decoration, ' - is not bold')
             if color[1] != '0' or color[2] != '0':
                 print(color, 'is not red')
@@ -79,6 +81,10 @@ def compare_parameters(browser, parameters):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
+    # driver = webdriver.Ie()
+    # driver = webdriver.Firefox(firefox_binary="c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe",
+    #                            capabilities={"marionette": True})
+    driver.implicitly_wait(5)
     driver.get(URL)
     find_parameters(driver, find_items(driver))
     driver.close()
