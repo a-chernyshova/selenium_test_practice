@@ -16,7 +16,7 @@ def parse_color(color):
 
 
 def find_parameters(browser, num):
-
+    # for each element create list[link, title, price] it can be 2 prices
     for i in range(num):
         page = browser.find_element_by_css_selector('div.middle')
         element = page.find_elements_by_css_selector('a.link')[i]
@@ -28,6 +28,7 @@ def find_parameters(browser, num):
             price = element.find_elements_by_css_selector('.price')[0].text
             parameters.append(price)
         else:
+            # check style for regular-price: color, font-size, decoration
             reg_price = element.find_elements_by_css_selector('.regular-price')[0].text
             font_size_regular = element.find_element_by_css_selector('.regular-price').value_of_css_property('font-size')
             decoration = element.find_element_by_css_selector('.regular-price').value_of_css_property("text-decoration")
@@ -40,6 +41,7 @@ def find_parameters(browser, num):
             if color[0] != color[1] and color[1] != color[2]:
                 print(color, ' is not grey')
 
+            # check style for campaign-price: color, font-size and decoration
             sale = element.find_elements_by_css_selector('.campaign-price')[0].text
             font_size_campaign = element.find_element_by_css_selector('.campaign-price').value_of_css_property(
                 'font-size')
@@ -58,6 +60,7 @@ def find_parameters(browser, num):
         compare_parameters(browser, parameters)
 
 
+# open link, find elements and compare parameters, then return to the previous page
 def compare_parameters(browser, parameters):
     browser.get(parameters[0])
     title = browser.find_element_by_css_selector('h1').text
