@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 from random import randint
 import string
 
@@ -41,7 +42,7 @@ def fill_out_reg_form(driver, test_data, email):
     confirmed_password = driver.find_element_by_css_selector('input[name=confirmed_password')
     confirmed_password.send_keys(test_data['password'])
 
-    driver.find_element_by_css_selector('option[value=NJ]').click()
+    Select(driver.find_element_by_css_selector("select[name=zone_code]")).select_by_value('NJ')
     driver.find_element_by_css_selector('button[name=create_account]').click()
 
 
@@ -69,4 +70,5 @@ if __name__ == '__main__':
         login(driver, TESTDATA_1, email)
         logout(driver)
     finally:
-        driver.close()
+        #driver.close()
+        pass
