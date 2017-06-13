@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 URL = 'http://localhost:8080/litecart'
+CHECKOUT_URL = 'http://127.0.0.1:8080/litecart/en/checkout'
 
 
 def fill_out_basket(driver):
@@ -14,14 +15,15 @@ def fill_out_basket(driver):
         add_item(driver, link)
         driver.implicitly_wait(5)
 
-    driver.get('http://127.0.0.1:8080/litecart/en/checkout')
+    driver.get(CHECKOUT_URL)
     del_from_basket()
 
 
 def del_from_basket():
     remove_list = driver.find_elements_by_name('remove_cart_item')
-    for item in remove_list:
-        item.click()
+    print(len(remove_list))
+    # for item in remove_list:
+    #     item.click()
 
 
 def add_item(driver, link):
@@ -33,11 +35,10 @@ def add_item(driver, link):
     num = randint(1, 5)
     quantity.send_keys(num)
     driver.find_element_by_name('add_cart_product').click()
-
-    wait = WebDriverWait(driver, 2)
+    element = driver.find_element_by_id('cart-wrapper')
+    wait = WebDriverWait(driver, 4)
     driver.refresh()
-    wait.until(EC.staleness_of(driver.find_element_by_id('cart-wrapper')))
-    print('waiting')
+    wait.until(EC.staleness_of(element))
     driver.get(URL)
 
 
@@ -47,5 +48,5 @@ if __name__ == '__main__':
         driver.get(URL)
         fill_out_basket(driver)
     finally:
-        pass
         #driver.close()
+        pass

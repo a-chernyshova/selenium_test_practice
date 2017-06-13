@@ -82,6 +82,7 @@ def compare_parameters(browser, parameters):
 if __name__ == "__main__":
     driver = webdriver.Chrome()
     # driver = webdriver.Ie()
+    # driver = webdriver.Edge()
     # driver = webdriver.Firefox(firefox_binary="c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe",
     #                            capabilities={"marionette": True})
     driver.implicitly_wait(5)

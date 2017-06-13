@@ -70,5 +70,4 @@ if __name__ == '__main__':
         login(driver, TESTDATA_1, email)
         logout(driver)
     finally:
-        #driver.close()
-        pass
+        driver.close()
