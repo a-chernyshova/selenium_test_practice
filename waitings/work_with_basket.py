@@ -10,35 +10,32 @@ CHECKOUT_URL = 'http://127.0.0.1:8080/litecart/en/checkout'
 
 
 def fill_out_basket(driver):
+    driver.implicitly_wait(1)
     for i in [1, 2, 3]:
         link = driver.find_elements_by_css_selector('a.link')[i].get_attribute('href')
         add_item(driver, link)
-        driver.implicitly_wait(5)
 
-    driver.get(CHECKOUT_URL)
+    driver.find_element_by_css_selector('#cart a.link').click()
     del_from_basket()
 
 
 def del_from_basket():
-    remove_list = driver.find_elements_by_name('remove_cart_item')
-    print(len(remove_list))
-    wait = WebDriverWait(driver, 4)
+    wait = WebDriverWait(driver, 2)
     driver.refresh()
-    # пока что тут полная чушь
-    for item in remove_list:
-        item.click()
-        table = driver.find_element_by_class_name('dataTable')
-        wait.until(EC.staleness_of(table))
+    while driver.find_elements_by_name('cart_form'):
+        to_remove = driver.find_element_by_name('remove_cart_item')
+        to_remove.click()
+        item = driver.find_element_by_name('cart_form')
+        wait.until(EC.staleness_of(item))
 
 
 def add_item(driver, link):
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(1)
     basket = driver.find_element_by_id('cart-wrapper')
     items_amount = basket.find_element_by_css_selector('.quantity').text
-    print(items_amount)
 
     driver.get(link)
-    wait = WebDriverWait(driver, 4)
+    wait = WebDriverWait(driver, 2)
     driver.refresh()
 
     size = driver.find_elements_by_name('options[Size]')
@@ -51,9 +48,8 @@ def add_item(driver, link):
     driver.find_element_by_name('add_cart_product').click()
 
     wait.until(EC.text_to_be_present_in_element((By.XPATH, '//*[@id="cart"]/a[2]/span[1]'), str(int(items_amount) + num)))
-    basket = driver.find_element_by_id('cart-wrapper')
-    changed_amount_of_items = basket.find_element_by_css_selector('.quantity').text
-    print(changed_amount_of_items)
+    # basket = driver.find_element_by_id('cart-wrapper')
+    # changed_amount_of_items = basket.find_element_by_css_selector('.quantity').text
 
     driver.get(URL)
 
@@ -64,5 +60,4 @@ if __name__ == '__main__':
         driver.get(URL)
         fill_out_basket(driver)
     finally:
-        #driver.close()
-        pass
+        driver.close()
