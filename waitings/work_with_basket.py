@@ -22,23 +22,39 @@ def fill_out_basket(driver):
 def del_from_basket():
     remove_list = driver.find_elements_by_name('remove_cart_item')
     print(len(remove_list))
-    # for item in remove_list:
-    #     item.click()
+    wait = WebDriverWait(driver, 4)
+    driver.refresh()
+    # пока что тут полная чушь
+    for item in remove_list:
+        item.click()
+        table = driver.find_element_by_class_name('dataTable')
+        wait.until(EC.staleness_of(table))
 
 
 def add_item(driver, link):
+    driver.implicitly_wait(5)
+    basket = driver.find_element_by_id('cart-wrapper')
+    items_amount = basket.find_element_by_css_selector('.quantity').text
+    print(items_amount)
+
     driver.get(link)
+    wait = WebDriverWait(driver, 4)
+    driver.refresh()
+
     size = driver.find_elements_by_name('options[Size]')
     if size:
         Select(size[0]).select_by_value('Medium')
     quantity = driver.find_element_by_name('quantity')
+    quantity.clear()
     num = randint(1, 5)
     quantity.send_keys(num)
     driver.find_element_by_name('add_cart_product').click()
-    element = driver.find_element_by_id('cart-wrapper')
-    wait = WebDriverWait(driver, 4)
-    driver.refresh()
-    wait.until(EC.staleness_of(element))
+
+    wait.until(EC.text_to_be_present_in_element((By.XPATH, '//*[@id="cart"]/a[2]/span[1]'), str(int(items_amount) + num)))
+    basket = driver.find_element_by_id('cart-wrapper')
+    changed_amount_of_items = basket.find_element_by_css_selector('.quantity').text
+    print(changed_amount_of_items)
+
     driver.get(URL)
 
 
