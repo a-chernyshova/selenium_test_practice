@@ -60,4 +60,4 @@ if __name__ == '__main__':
         driver.get(URL)
         fill_out_basket(driver)
     finally:
-        driver.close()
+        driver.quit()

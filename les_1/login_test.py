@@ -8,8 +8,8 @@ PASSWORD = 'admin'
 
 def login(url, login, password):
     global browser
-    browser = webdriver.Firefox()
-    #browser = webdriver.Chrome()
+    #browser = webdriver.Firefox()
+    browser = webdriver.Chrome()
     #browser = webdriver.Ie()
     #browser = webdriver.Opera()
     #browser = webdriver.Edge()

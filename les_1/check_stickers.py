@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 
-
 URL = 'http://localhost:8080/litecart'
 STICKER_VALUE = ['NEW', 'SALE']
 
@@ -21,7 +20,7 @@ def check_stickers(browser):
 
 
 if __name__ == "__main__":
-    browser = webdriver.Firefox()
+    browser = webdriver.Chrome()
     browser.get(URL)
     check_stickers(browser)
     browser.close()
