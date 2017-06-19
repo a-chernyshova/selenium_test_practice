@@ -15,14 +15,20 @@ def add_new_country(driver):
     driver.refresh()
     country_link = driver.find_elements_by_id('app-')[2]
     country_link.click()
+
+    original_window = driver.current_window_handle
+
     driver.find_element_by_class_name('button').click()
     table = driver.find_element_by_css_selector('#content table')
     links = table.find_elements_by_tag_name('i')
     for link in links:
-
         wait.until(EC.new_window_is_opened)
         link.click()
+        windows = driver.window_handles
+        driver.switch_to_window(windows[1])
         driver.close()
+        driver.switch_to_window(original_window)
+    print('Result: Success')
 
 if __name__ == '__main__':
     try:
@@ -30,5 +36,4 @@ if __name__ == '__main__':
         driver.implicitly_wait(5)
         add_new_country(driver)
     finally:
-        #driver.quit()
-        pass
+        driver.quit()
